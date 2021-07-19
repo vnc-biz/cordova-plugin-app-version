@@ -62,4 +62,9 @@ getAppVersion.getVersionCode = function (success, fail) {
   return getPromisedCordovaExec('getVersionCode', success, fail);
 };
 
+//TODO The Android supports only
+getAppVersion.getIsAppFromMarket = function (success, fail) {
+  return getPromisedCordovaExec('getIsAppFromMarket', success, fail);
+};
+
 module.exports = getAppVersion;

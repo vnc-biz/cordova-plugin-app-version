@@ -10,6 +10,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PackageManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class AppVersion extends CordovaPlugin {
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -34,6 +38,22 @@ public class AppVersion extends CordovaPlugin {
         PackageManager packageManager = this.cordova.getActivity().getPackageManager();
         callbackContext.success(packageManager.getPackageInfo(this.cordova.getActivity().getPackageName(), 0).versionCode);
       return true;
+      }
+      if (action.equals("getIsAppFromMarket")) {
+        PackageManager packageManager = this.cordova.getActivity().getPackageManager();
+
+        // A list with valid installers package name
+        List<String> validInstallers = new ArrayList<>(
+            Arrays.asList("com.android.vending", "com.google.android.feedback"));
+
+        // The package name of the app that has installed your app
+        final String installer = packageManager.getInstallerPackageName(this.cordova.getActivity().getPackageName());
+        
+        // true if your app has been downloaded from Play Store
+        boolean isFromMarket = installer != null && validInstallers.contains(installer);
+
+        callbackContext.success(isFromMarket ? 1 : 0);
+        return true;
       }
       return false;
     } catch (NameNotFoundException e) {
