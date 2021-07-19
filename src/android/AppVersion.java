@@ -48,9 +48,11 @@ public class AppVersion extends CordovaPlugin {
 
         // The package name of the app that has installed your app
         final String installer = packageManager.getInstallerPackageName(this.cordova.getActivity().getPackageName());
-
+        
         // true if your app has been downloaded from Play Store
-        callbackContext.success(installer != null && validInstallers.contains(installer));
+        boolean isFromMarket = installer != null && validInstallers.contains(installer);
+
+        callbackContext.success(isFromMarket ? 1 : 0);
         return true;
       }
       return false;
